@@ -106,7 +106,7 @@ jobs:
           set -euxo pipefail
           mkdir -p .ci-tools
           git clone --depth=1 --filter=blob:none --sparse \
-            https://github.com/WorldHealthOrganization/smart-html .ci-tools/webroot
+            https://github.com/hl7-pt/hl7-pt-webroot .ci-tools/webroot
           git -C .ci-tools/webroot sparse-checkout init --no-cone || git -C .ci-tools/webroot sparse-checkout init
           git -C .ci-tools/webroot sparse-checkout set --no-cone templates publish-setup.json package-registry.json
           git -C .ci-tools/webroot sparse-checkout list || true
@@ -136,7 +136,7 @@ jobs:
             --source "${{ github.workspace }}" \
             --source-repo "https://github.com/${{ github.repository }}" \
             --source-branch "${SOURCE_BRANCH}" \
-            --webroot-repo "https://github.com/costateixeira/smart-html" \
+            --webroot-repo "https://github.com/hl7-pt/hl7-pt-webroot" \
             --registry-repo "https://github.com/costateixeira/ig-registry" \
             --ensure-pubreq \
             --pubreq-package-id "${{ inputs.pubreq_package_id }}" \
