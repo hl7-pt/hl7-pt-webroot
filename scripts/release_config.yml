@@ -1,0 +1,35 @@
+# Source repository settings
+source_repo: https://github.com/hl7-eu/any_repo
+source_branch: release-candidate  # Make sure this branch exists!
+source_dir: ./source  # Local directory for source
+
+# Webroot (smart-html) settings  
+webroot_repo: https://github.com/hl7eu-webroot
+webroot_branch: master
+webroot_pr_target_branch: master
+
+# History template settings
+history_repo: https://github.com/HL7/fhir-ig-history-template
+history_branch: master
+
+# Registry settings
+registry_pr_target_branch: master
+
+# Sparse checkout configuration
+enable_sparse_checkout: true
+sparse_dirs:
+  - /templates
+  - /assets
+#  - /any_repo  # ADD THE IG FOLDER!
+
+# GitHub settings
+enable_pr_creation: false  # Set to false for local testing
+github_token: ''  # Leave empty for local, or add PAT
+
+# Publishing settings (add these)
+publish_to_gh_pages: true
+sitepreview_dir: sitepreview
+gh_pages_branch: gh-pages
+exclude_paths:
+
+  - ig-build-zips/

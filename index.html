@@ -418,22 +418,22 @@
     <script>
         const igs = {
             ballot: [
-                { name: "adr-ig", summary: "Guia atual publicado/em ballot.", base: "../adr-ig/" },
-                { name: "core", summary: "Guia core publicado/em ballot.", base: "../core/" },
-                { name: "gk-fhir-ig", summary: "Guia atual publicado/em ballot.", base: "../gk-fhir-ig/" }
+                { name: "adr-ig", summary: "Guia atual publicado/em ballot.", base: "../adr-ig/", repo: "https://github.com/hl7-pt/adr-ig" },
+                { name: "core", summary: "Guia core publicado/em ballot.", base: "../core/", repo: "https://github.com/hl7-pt/core" },
+                { name: "gk-fhir-ig", summary: "Guia atual publicado/em ballot.", base: "../gk-fhir-ig/", repo: "https://github.com/gatekeeper-project/gk-fhir-ig" }
             ],
             development: [
-                { name: "affiliate-empty-ig", summary: "Workspace draft para guia affiliate.", base: "../affiliate-empty-ig/" },
-                { name: "community-health-ig", summary: "IG de saúde comunitária em evolução ativa.", base: "../community-health-ig/" },
-                { name: "draft-et-rse", summary: "IG draft em desenvolvimento.", base: "../draft-et-rse/" },
-                { name: "medication-record", summary: "Guia de registo de medicação em desenvolvimento.", base: "../medication-record/" },
-                { name: "meu-ig-teste", summary: "Workspace de sandbox/testes de IG.", base: "../meu-ig-teste/" },
-                { name: "obs-neonat-ig", summary: "IG de observação neonatal em progresso.", base: "../obs-neonat-ig/" },
-                { name: "patitent-admin-ig", summary: "Guia de administração de doentes em progresso.", base: "../patitent-admin-ig/" },
-                { name: "pem-h", summary: "Workspace de projeto em desenvolvimento.", base: "../pem-h/" },
-                { name: "tele-consulta-ig", summary: "Guia de teleconsulta em desenvolvimento.", base: "../tele-consulta-ig/" },
-                { name: "terminologias", summary: "Artefactos de terminologia e trabalho de guia.", base: "../terminologias/" },
-                { name: "workflow-ep-ig", summary: "Guia de workflow EP em desenvolvimento.", base: "../workflow-ep-ig/" }
+                { name: "affiliate-empty-ig", summary: "Workspace draft para guia affiliate.", repo: "https://github.com/hl7pt/affiliate-empty-ig" },
+                { name: "community-health-ig", summary: "IG de saúde comunitária em evolução ativa.", repo: "https://github.com/hl7-pt/community-health-ig" },
+                { name: "draft-et-rse", summary: "IG draft em desenvolvimento.", repo: "https://github.com/hl7-pt/draft-et-rse" },
+                { name: "medication-record", summary: "Guia de registo de medicação em desenvolvimento.", repo: "https://github.com/hl7-pt/medication-record" },
+                { name: "meu-ig-teste", summary: "Workspace de sandbox/testes de IG.", repo: "https://github.com/joofio/meu-ig-teste" },
+                { name: "obs-neonat-ig", summary: "IG de observação neonatal em progresso.", repo: "https://github.com/hl7-pt/obs-neonat-ig" },
+                { name: "patitent-admin-ig", summary: "Guia de administração de doentes em progresso.", repo: "https://github.com/hl7-pt/patitent-admin-ig" },
+                { name: "pem-h", summary: "Workspace de projeto em desenvolvimento.", repo: "https://github.com/hl7pt/pem-h" },
+                { name: "tele-consulta-ig", summary: "Guia de teleconsulta em desenvolvimento.", repo: "https://github.com/hl7-pt/tele-consulta-ig" },
+                { name: "terminologias", summary: "Artefactos de terminologia e trabalho de guia.", repo: "https://github.com/hl7-pt/terminologias" },
+                { name: "workflow-ep-ig", summary: "Guia de workflow EP em desenvolvimento.", repo: "https://github.com/hl7-pt/workflow-ep-ig" }
             ]
         };
 
@@ -474,6 +474,12 @@
         function cardTemplate(ig, type, index) {
             const badgeClass = type === "ballot" ? "ballot" : "dev";
             const badgeText = type === "ballot" ? "Ballot" : "Desenv.";
+
+            const outputHref = type === "ballot"
+                ? `./${ig.name}/output/index.html`
+                : `${ig.repo}`;
+            const outputLabel = type === "ballot" ? "Abrir output" : "Abrir repo";
+
             return `
         <article class="card" data-type="${type}" style="animation-delay:${Math.min(index * 0.05, 0.5)}s">
           <div class="top">
@@ -482,9 +488,9 @@
           </div>
           <p class="desc">${ig.summary}</p>
           <div class="links">
-                        <a href="${ig.base}output/index.html">Abrir output</a>
-                        <a href="${ig.base}">Abrir projeto</a>
-                        <a href="${ig.base}README.md">Ler README</a>
+            <a href="${outputHref}">${outputLabel}</a>
+            <a href="${ig.repo}">Abrir projeto</a>
+            <a href="${ig.repo}/blob/main/README.md">Ler README</a>
           </div>
         </article>
       `;
