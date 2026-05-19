@@ -137,7 +137,7 @@ jobs:
             --source-repo "https://github.com/${{ github.repository }}" \
             --source-branch "${SOURCE_BRANCH}" \
             --webroot-repo "https://github.com/hl7-pt/hl7-pt-webroot" \
-            --registry-repo "https://github.com/costateixeira/ig-registry" \
+            --registry-repo "https://github.com/FHIR/ig-registry" \
             --ensure-pubreq \
             --pubreq-package-id "${{ inputs.pubreq_package_id }}" \
             --pubreq-version "${{ inputs.pubreq_version }}" \
