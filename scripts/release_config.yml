@@ -1,12 +1,12 @@
 # Source repository settings
-source_repo: https://github.com/hl7-eu/any_repo
+source_repo: https://github.com/hl7-pt/any_repo
 source_branch: release-candidate  # Make sure this branch exists!
 source_dir: ./source  # Local directory for source
 
 # Webroot (smart-html) settings  
-webroot_repo: https://github.com/hl7eu-webroot
-webroot_branch: master
-webroot_pr_target_branch: master
+webroot_repo: https://github.com/hl7-pt-webroot
+webroot_branch: main
+webroot_pr_target_branch: main
 
 # History template settings
 history_repo: https://github.com/HL7/fhir-ig-history-template
