@@ -61,7 +61,7 @@ jobs:
             -o .ci-tools/ig_publisher.py
           curl -fsSL "https://raw.githubusercontent.com/hl7-pt/hl7-pt-webroot/main/scripts/requirements.txt" \
             -o .ci-tools/requirements.txt
-          curl -fsSL "https://raw.githubusercontent.com/hl7-pt/hl7-pt-webroot/main/scripts/release-config.yaml" \
+          curl -fsSL "https://raw.githubusercontent.com/hl7-pt/hl7-pt-webroot/main/scripts/release-config.yml" \
             -o .ci-tools/release-config.global.yaml
           chmod +x .ci-tools/ig_publisher.py
 
