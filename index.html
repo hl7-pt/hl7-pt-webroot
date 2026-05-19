@@ -1,0 +1,515 @@
+<!doctype html>
+<html lang="pt-PT">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>HL7 Portugal Affiliate | Portal de IGs</title>
+    <meta name="description"
+        content="Portal central da HL7 Portugal Affiliate para guias de implementação: guias em ballot e em desenvolvimento.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f8f5ef;
+            --ink: #182026;
+            --muted: #5a6168;
+            --paper: #fffdf7;
+            --line: rgba(24, 32, 38, 0.14);
+            --primary: #006d77;
+            --primary-strong: #00535a;
+            --accent: #f28482;
+            --accent-soft: #ffd6d4;
+            --ok: #2a9d8f;
+            --dev: #e76f51;
+            --shadow: 0 14px 38px rgba(24, 32, 38, 0.11);
+            --radius-lg: 20px;
+            --radius-md: 14px;
+            --radius-sm: 10px;
+            --maxw: 1140px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            color: var(--ink);
+            background:
+                radial-gradient(1100px 480px at 7% -8%, #ffeac2 0%, transparent 55%),
+                radial-gradient(900px 420px at 96% -12%, #c7ecef 0%, transparent 58%),
+                linear-gradient(180deg, #fffaf0 0%, #f5efe7 66%, #f8f5ef 100%);
+            font-family: "Space Grotesk", "Trebuchet MS", sans-serif;
+            min-height: 100%;
+        }
+
+        .noise {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+            opacity: 0.09;
+            background-image: radial-gradient(circle at 1px 1px, #000 1px, transparent 0);
+            background-size: 4px 4px;
+        }
+
+        .wrap {
+            width: min(var(--maxw), calc(100% - 2.2rem));
+            margin: 0 auto 3rem;
+        }
+
+        .hero {
+            padding: 2.6rem 0 1.25rem;
+            animation: fade-up 0.7s ease both;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.75rem;
+        }
+
+        .brand-logo {
+            height: 44px;
+            width: auto;
+            object-fit: contain;
+            border-radius: 10px;
+            border: 1px solid var(--line);
+            background: #fff;
+            padding: 0.25rem 0.4rem;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            padding: 0.35rem 0.75rem;
+            border-radius: 999px;
+            background: #ffffff;
+            border: 1px solid var(--line);
+            font-size: 0.8rem;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        h1 {
+            margin: 0.9rem 0 0.55rem;
+            font-family: "Fraunces", Georgia, serif;
+            font-size: clamp(2rem, 5vw, 3.35rem);
+            line-height: 1.06;
+            letter-spacing: 0.01em;
+            max-width: 15ch;
+        }
+
+        .subtitle {
+            margin: 0;
+            color: var(--muted);
+            max-width: 70ch;
+            font-size: clamp(0.98rem, 1.8vw, 1.09rem);
+            line-height: 1.5;
+        }
+
+        .tools {
+            margin-top: 1.3rem;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 0.8rem;
+            align-items: center;
+        }
+
+        .search {
+            width: 100%;
+            border: 1px solid var(--line);
+            border-radius: var(--radius-md);
+            background: var(--paper);
+            color: var(--ink);
+            font-size: 0.98rem;
+            padding: 0.82rem 0.95rem;
+            box-shadow: inset 0 1px 0 #fff;
+        }
+
+        .search:focus {
+            outline: 2px solid color-mix(in srgb, var(--primary), white 70%);
+            outline-offset: 1px;
+            border-color: var(--primary);
+        }
+
+        .stats {
+            display: flex;
+            gap: 0.55rem;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .chip {
+            border-radius: 999px;
+            border: 1px solid var(--line);
+            background: #fff;
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 0.4rem 0.7rem;
+            color: var(--ink);
+            white-space: nowrap;
+        }
+
+        .section {
+            margin-top: 1.4rem;
+            animation: fade-up 0.8s ease both;
+            animation-delay: 0.08s;
+        }
+
+        .section-head {
+            display: flex;
+            align-items: end;
+            justify-content: space-between;
+            gap: 0.8rem;
+            margin-bottom: 0.85rem;
+        }
+
+        h2 {
+            margin: 0;
+            font-size: clamp(1.15rem, 2.2vw, 1.6rem);
+            font-family: "Fraunces", Georgia, serif;
+            letter-spacing: 0.02em;
+        }
+
+        .section p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 0.94rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(245px, 1fr));
+            gap: 0.95rem;
+        }
+
+        .card {
+            position: relative;
+            border: 1px solid var(--line);
+            border-radius: var(--radius-lg);
+            background: var(--paper);
+            box-shadow: var(--shadow);
+            padding: 0.95rem;
+            overflow: hidden;
+            transform: translateY(8px);
+            opacity: 0;
+            animation: pop 0.55s ease forwards;
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            top: -48px;
+            right: -38px;
+            width: 125px;
+            height: 125px;
+            border-radius: 999px;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.65), transparent 60%);
+            pointer-events: none;
+        }
+
+        .card[data-type="ballot"] {
+            background:
+                linear-gradient(180deg, #f3fffc 0%, #fffdf7 60%),
+                var(--paper);
+        }
+
+        .card[data-type="dev"] {
+            background:
+                linear-gradient(180deg, #fff6f3 0%, #fffdf7 60%),
+                var(--paper);
+        }
+
+        .top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.7rem;
+        }
+
+        .name {
+            margin: 0;
+            font-size: 1.03rem;
+            letter-spacing: 0.01em;
+            word-break: break-word;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            border-radius: 999px;
+            border: 1px solid transparent;
+            font-size: 0.74rem;
+            font-weight: 700;
+            padding: 0.2rem 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            white-space: nowrap;
+        }
+
+        .badge.ballot {
+            color: #0b4f47;
+            background: color-mix(in srgb, var(--ok), white 83%);
+            border-color: color-mix(in srgb, var(--ok), white 55%);
+        }
+
+        .badge.dev {
+            color: #7a2f1f;
+            background: color-mix(in srgb, var(--dev), white 84%);
+            border-color: color-mix(in srgb, var(--dev), white 58%);
+        }
+
+        .desc {
+            color: var(--muted);
+            font-size: 0.92rem;
+            margin: 0.65rem 0 0.85rem;
+            min-height: 2.55em;
+        }
+
+        .links {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .links a {
+            text-decoration: none;
+            color: var(--ink);
+            border: 1px solid var(--line);
+            background: #fff;
+            border-radius: var(--radius-sm);
+            padding: 0.48rem 0.62rem;
+            font-size: 0.82rem;
+            font-weight: 600;
+            transition: all 0.18s ease;
+        }
+
+        .links a:hover,
+        .links a:focus-visible {
+            border-color: var(--primary);
+            color: var(--primary-strong);
+            transform: translateY(-1px);
+            outline: none;
+        }
+
+        .empty {
+            border: 1px dashed var(--line);
+            border-radius: var(--radius-md);
+            padding: 1rem;
+            color: var(--muted);
+            font-size: 0.93rem;
+            background: rgba(255, 255, 255, 0.45);
+        }
+
+        footer {
+            margin: 2.2rem 0 0;
+            color: var(--muted);
+            font-size: 0.84rem;
+            text-align: center;
+        }
+
+        @keyframes fade-up {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pop {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 760px) {
+            .wrap {
+                width: min(var(--maxw), calc(100% - 1.2rem));
+            }
+
+            .hero {
+                padding-top: 1.3rem;
+            }
+
+            .tools {
+                grid-template-columns: 1fr;
+            }
+
+            .stats {
+                justify-content: flex-start;
+            }
+
+            .card {
+                border-radius: 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="noise" aria-hidden="true"></div>
+
+    <main class="wrap">
+        <section class="hero">
+            <div class="brand">
+                <img id="affiliateLogo" class="brand-logo" alt="Logotipo HL7 Portugal Affiliate"
+                    src="../affiliate-empty-ig/local-template/package/content/assets/images/affiliate.png">
+                <span class="eyebrow">HL7 Portugal Affiliate</span>
+            </div>
+            <h1>Encontre rapidamente os guias de implementação em ballot e em desenvolvimento</h1>
+            <p class="subtitle">
+                Use esta página como ponto de acesso principal para os IGs atuais da HL7 Portugal. Pesquise por nome do
+                projeto e abra o output de cada guia ou a pasta do repositório.
+            </p>
+
+            <div class="tools" aria-label="Ferramentas de filtragem">
+                <label>
+                    <span class="sr-only" style="position:absolute;left:-9999px">Pesquisar IG por nome</span>
+                    <input id="search" class="search" type="search"
+                        placeholder="Pesquisar guias... (exemplo: core, medication, tele)">
+                </label>
+                <div class="stats">
+                    <span class="chip" id="totalChip">Total: 0</span>
+                    <span class="chip" id="ballotChip">Em ballot: 0</span>
+                    <span class="chip" id="devChip">Desenvolvimento: 0</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" aria-labelledby="ballot-title">
+            <div class="section-head">
+                <h2 id="ballot-title">IGs atuais / em ballot</h2>
+                <p>Projetos publicados com package-list detetado.</p>
+            </div>
+            <div id="ballotGrid" class="grid"></div>
+            <p id="ballotEmpty" class="empty" hidden>Nenhum IG em ballot corresponde à pesquisa.</p>
+        </section>
+
+        <section class="section" aria-labelledby="dev-title">
+            <div class="section-head">
+                <h2 id="dev-title">IGs em desenvolvimento</h2>
+                <p>Projetos ativos que ainda não estão marcados como prontos para ballot.</p>
+            </div>
+            <div id="devGrid" class="grid"></div>
+            <p id="devEmpty" class="empty" hidden>Nenhum IG em desenvolvimento corresponde à pesquisa.</p>
+        </section>
+
+        <footer>
+            <p>Raiz do workspace: ../IGs | Página estática do portal HL7 Portugal Affiliate.</p>
+        </footer>
+    </main>
+
+    <script>
+        const igs = {
+            ballot: [
+                { name: "adr-ig", summary: "Guia atual publicado/em ballot.", base: "../adr-ig/" },
+                { name: "core", summary: "Guia core publicado/em ballot.", base: "../core/" },
+                { name: "gk-fhir-ig", summary: "Guia atual publicado/em ballot.", base: "../gk-fhir-ig/" }
+            ],
+            development: [
+                { name: "affiliate-empty-ig", summary: "Workspace draft para guia affiliate.", base: "../affiliate-empty-ig/" },
+                { name: "community-health-ig", summary: "IG de saúde comunitária em evolução ativa.", base: "../community-health-ig/" },
+                { name: "draft-et-rse", summary: "IG draft em desenvolvimento.", base: "../draft-et-rse/" },
+                { name: "medication-record", summary: "Guia de registo de medicação em desenvolvimento.", base: "../medication-record/" },
+                { name: "meu-ig-teste", summary: "Workspace de sandbox/testes de IG.", base: "../meu-ig-teste/" },
+                { name: "obs-neonat-ig", summary: "IG de observação neonatal em progresso.", base: "../obs-neonat-ig/" },
+                { name: "patitent-admin-ig", summary: "Guia de administração de doentes em progresso.", base: "../patitent-admin-ig/" },
+                { name: "pem-h", summary: "Workspace de projeto em desenvolvimento.", base: "../pem-h/" },
+                { name: "tele-consulta-ig", summary: "Guia de teleconsulta em desenvolvimento.", base: "../tele-consulta-ig/" },
+                { name: "terminologias", summary: "Artefactos de terminologia e trabalho de guia.", base: "../terminologias/" },
+                { name: "workflow-ep-ig", summary: "Guia de workflow EP em desenvolvimento.", base: "../workflow-ep-ig/" }
+            ]
+        };
+
+        const searchInput = document.getElementById("search");
+        const ballotGrid = document.getElementById("ballotGrid");
+        const devGrid = document.getElementById("devGrid");
+        const ballotEmpty = document.getElementById("ballotEmpty");
+        const devEmpty = document.getElementById("devEmpty");
+
+        const totalChip = document.getElementById("totalChip");
+        const ballotChip = document.getElementById("ballotChip");
+        const devChip = document.getElementById("devChip");
+        const affiliateLogo = document.getElementById("affiliateLogo");
+
+        const logoCandidates = [
+            "../affiliate-empty-ig/local-template/package/content/assets/images/affiliate.png",
+            "../core/local-template/package/content/assets/images/affiliate.png",
+            "../adr-ig/local-template/package/content/assets/images/affiliate.png",
+            "../community-health-ig/local-template/package/content/assets/images/affiliate.png",
+            "../terminologias/local-template/package/content/assets/images/affiliate.png",
+            "../workflow-ep-ig/local-template/package/content/assets/images/affiliate.png"
+        ];
+
+        function loadFirstAvailableLogo(paths) {
+            if (!affiliateLogo || paths.length === 0) return;
+            const [current, ...rest] = paths;
+            const testImg = new Image();
+            testImg.onload = () => {
+                affiliateLogo.src = current;
+            };
+            testImg.onerror = () => {
+                loadFirstAvailableLogo(rest);
+            };
+            testImg.src = current;
+        }
+
+        function cardTemplate(ig, type, index) {
+            const badgeClass = type === "ballot" ? "ballot" : "dev";
+            const badgeText = type === "ballot" ? "Ballot" : "Desenv.";
+            return `
+        <article class="card" data-type="${type}" style="animation-delay:${Math.min(index * 0.05, 0.5)}s">
+          <div class="top">
+            <h3 class="name">${ig.name}</h3>
+            <span class="badge ${badgeClass}">${badgeText}</span>
+          </div>
+          <p class="desc">${ig.summary}</p>
+          <div class="links">
+                        <a href="${ig.base}output/index.html">Abrir output</a>
+                        <a href="${ig.base}">Abrir projeto</a>
+                        <a href="${ig.base}README.md">Ler README</a>
+          </div>
+        </article>
+      `;
+        }
+
+        function render() {
+            const q = searchInput.value.trim().toLowerCase();
+
+            const ballotList = igs.ballot.filter((ig) => ig.name.toLowerCase().includes(q));
+            const devList = igs.development.filter((ig) => ig.name.toLowerCase().includes(q));
+
+            ballotGrid.innerHTML = ballotList.map((ig, i) => cardTemplate(ig, "ballot", i)).join("");
+            devGrid.innerHTML = devList.map((ig, i) => cardTemplate(ig, "dev", i)).join("");
+
+            ballotEmpty.hidden = ballotList.length > 0;
+            devEmpty.hidden = devList.length > 0;
+
+            totalChip.textContent = `Total: ${ballotList.length + devList.length}`;
+            ballotChip.textContent = `Em ballot: ${ballotList.length}`;
+            devChip.textContent = `Desenvolvimento: ${devList.length}`;
+        }
+
+        searchInput.addEventListener("input", render);
+        loadFirstAvailableLogo(logoCandidates);
+        render();
+    </script>
+</body>
+
+</html>
