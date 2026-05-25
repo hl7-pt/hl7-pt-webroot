@@ -19,6 +19,10 @@ on:
         type: string
         required: false
         default: sitepreview
+      create_prs:               
+        type: boolean
+        required: false
+        default: false
         
 permissions:
   contents: write  # push to gh-pages in the caller repo
@@ -130,6 +134,12 @@ jobs:
         run: |
           set -euxo pipefail
           echo "Detected source branch: ${SOURCE_BRANCH}"
+
+          ENABLE_PR_FLAG=""
+          if [ "${{ inputs.create_prs }}" = "true" ]; then
+            ENABLE_PR_FLAG="--enable-pr"
+          fi
+
           python .ci-tools/ig_publisher.py \
             --global-config ".ci-tools/release-config.global.yaml" \
             --local-config "release-config.yaml" \
@@ -145,5 +155,5 @@ jobs:
             --pubreq-path "${{ inputs.pubreq_path }}" \
             --publish-gh-pages \
             --sitepreview-dir "${{ inputs.sitepreview_dir }}" \
-            --enable-pr \
+            ${ENABLE_PR_FLAG} \
             --github-token "${{ secrets.GITHUB_TOKEN }}"
