@@ -124,7 +124,7 @@ jobs:
       - name: Build & publish (Python drives gh-pages)
         env:
           # Use PR head branch when present, otherwise the ref name (branch or tag)
-          SOURCE_BRANCH: ${{ github.head_ref || github.ref_name }}
+          SOURCE_BRANCH: ${{ github.event.release.target_commitish || github.head_ref || github.ref_name }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
         run: |
