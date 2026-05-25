@@ -56,15 +56,43 @@ def _first_path_segment(s: str) -> str | None:
     return parts[0] if parts and parts[0] else None
 
 
-def _ig_slug_from_pubreq(source_dir: str) -> str | None:
-    """Read publication-request.json and return IG slug (first path segment)."""
+def _ig_slug_from_pubreq(source_dir: str, webroot_dir: str = None) -> str | None:
+    """Read publication-request.json and return IG slug.
+
+    Strips the base URL path from publish-setup.json before extracting
+    the slug, so sites published under a sub-path (e.g. /fhir/) work
+    correctly alongside sites published at the root domain.
+    """
     try:
         with open(
             os.path.join(source_dir, "publication-request.json"), encoding="utf-8"
         ) as f:
             pr = json.load(f)
-        # Prefer 'path', else fall back to 'canonical'
-        return _first_path_segment(pr.get("path") or pr.get("canonical") or "")
+        raw = pr.get("path") or pr.get("canonical") or ""
+
+        # Strip the site base path (e.g. "/fhir") from publish-setup.json
+        # so we return "noticia-nascimento" not "fhir" for
+        # https://hl7.pt/fhir/noticia-nascimento/1.0.0
+        base_path = ""
+        if webroot_dir:
+            setup_file = os.path.join(webroot_dir, "publish-setup.json")
+            try:
+                with open(setup_file, encoding="utf-8") as f:
+                    setup = json.load(f)
+                base_url = setup.get("website", {}).get("url", "")
+                if base_url and "://" in base_url:
+                    base_path = urlparse(base_url).path.rstrip("/")
+            except Exception:
+                pass
+
+        if base_path and "://" in raw:
+            raw_path = urlparse(raw).path
+            if raw_path.startswith(base_path + "/"):
+                raw_path = raw_path[len(base_path):]
+            parts = raw_path.strip("/").split("/")
+            return parts[0] if parts and parts[0] else None
+
+        return _first_path_segment(raw)
     except Exception:
         return None
 
@@ -747,7 +775,7 @@ This PR updates the FHIR Implementation Guide registry with latest information.
             self._maybe_write_pubreq()
 
         # 2) Determine IG slug (first path segment) from source
-        slug = _ig_slug_from_pubreq(self.source_dir)
+        slug = _ig_slug_from_pubreq(self.source_dir, self.webroot_dir)
         if slug:
             self.log_progress(f"📁 Detected IG slug: {slug}")
         else:
