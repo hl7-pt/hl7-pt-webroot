@@ -51,7 +51,7 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Download scripts from smart-html@ref
+      - name: Download scripts from hl7-pt-webroot
         run: |
           set -euxo pipefail
           REF="${{ github.workflow_ref }}"
