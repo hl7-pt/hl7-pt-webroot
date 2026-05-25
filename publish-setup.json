@@ -1,7 +1,7 @@
 {
   "website": {
     "style": "fhir.layout",
-    "url": "http://hl7.pt/fhir",
+    "url": "https://hl7.pt/fhir",
     "server": "apache",
     "org": "HL7 Portugal",
     "index-template": "index.template",
